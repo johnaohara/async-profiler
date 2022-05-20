@@ -46,6 +46,7 @@ usage() {
     echo "  --jfrsync config  synchronize profiler with JFR recording"
     echo "  --fdtransfer      use fdtransfer to serve perf requests"
     echo "                    from the non-privileged target"
+    echo "  --profiler-path   path to libasyncProfiler.so"
     echo ""
     echo "<pid> is a numeric process ID of the target JVM"
     echo "      or 'jps' keyword to find running JVM automatically"
@@ -259,6 +260,10 @@ while [ $# -gt 0 ]; do
             ;;
         --safe-mode)
             PARAMS="$PARAMS,safemode=$2"
+            shift
+            ;;
+        --profiler-path)
+            PROFILER=$2
             shift
             ;;
         [0-9]*)

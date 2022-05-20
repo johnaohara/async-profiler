@@ -459,6 +459,14 @@ The following is a complete list of the command-line options accepted by
   profiled process (due to low privileges).
   See [Profiling Java in a container](#profiling-java-in-a-container).
 
+* `--profiler-path` - define path to `libasyncProfiler.so`. This is useful for profiling applications
+  running in a namespace (e.g. within a container), from a host machine. `libasyncProfiler.so` can either 
+  be mounted into or copied to the running container, and the path to `libasyncProfiler.so`from within the 
+  container can be passed to `profiler.sh`.
+ 
+  Example: `./profiler.sh --profiler-path /path/to/libasyncProfiler.so 8983`
+
+
 * `-v`, `--version` - prints the version of profiler library. If PID is specified,
   gets the version of the library loaded into the given process.
 
@@ -473,9 +481,10 @@ the process ID.
 
 async-profiler should be run from the host by a privileged user - it will
 automatically switch to the proper pid/mount namespace and change
-user credentials to match the target process. Also make sure that
-the target container can access `libasyncProfiler.so` by the same
-absolute path as on the host.
+user credentials to match the target process. By default, the target container can 
+access `libasyncProfiler.so` by the same absolute path as on the host. If the filesystem
+layout is different from within the container, the default path for `libasyncProfiler.so` 
+can be overridden with `--profiler-path /path/to/libasyncProfiler.so`.
 
 By default, Docker container restricts the access to `perf_event_open`
 syscall. There are 3 alternatives to allow profiling in a container:
